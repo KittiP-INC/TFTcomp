@@ -31,100 +31,96 @@ class _EditScreenState extends State<EditScreen> {
     playstyleController.text = widget.statement.playstyle;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('แบบฟอร์มแก้ไขข้อมูล'),
+      appBar: AppBar(
+        title: const Text('แบบฟอร์มแก้ไขข้อมูล'),
+      ),
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _buildTextField(compnameController, 'ชื่อComp'),
+              _buildTextField(characterController, 'ชื่อตัวละคร'),
+              _buildTextField(augmentController, 'ชื่อAugment'),
+              _buildTextField(emblemController, 'ชื่อEmblem'),
+              _buildTextField(playstyleController, 'วิธีเล่น'),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  backgroundColor: const Color.fromARGB(255, 255, 116, 3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  'บันทึก',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    // create transaction data object
+                    var statement = Transactions(
+                      keyID: widget.statement.keyID,
+                      compname: compnameController.text,
+                      character: characterController.text,
+                      augment: augmentController.text,
+                      emblem: emblemController.text,
+                      playstyle: playstyleController.text,
+                    );
+                    // add transaction data object to provider
+                    var provider = Provider.of<TransactionProvider>(context,
+                        listen: false);
+                    provider.updateTransaction(statement);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) {
+                          return MyHomePage();
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
-        body: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'ชื่อComp',
-                  ),
-                  autofocus: false,
-                  controller: compnameController,
-                  validator: (String? str) {
-                    if (str!.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'ชื่อตัวละคร',
-                  ),
-                  autofocus: false,
-                  controller: characterController,
-                  validator: (String? str) {
-                    if (str!.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'ชื่อAugment',
-                  ),
-                  autofocus: false,
-                  controller: augmentController,
-                  validator: (String? str) {
-                    if (str!.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'ชื่อEmblem',
-                  ),
-                  autofocus: false,
-                  controller: emblemController,
-                  validator: (String? str) {
-                    if (str!.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'วิธีเล่น',
-                  ),
-                  autofocus: false,
-                  controller: playstyleController,
-                  validator: (String? str) {
-                    if (str!.isEmpty) {
-                      return 'กรุณากรอกข้อมูล';
-                    }
-                  },
-                ),
-                TextButton(
-                    child: const Text('บันทึก'),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        // create transaction data object
-                        var statement = Transactions(
-                          keyID: widget.statement.keyID,
-                          compname: compnameController.text,
-                          character: characterController.text,
-                          augment: augmentController.text,
-                          emblem: emblemController.text,
-                          playstyle: playstyleController.text,
-                        );
-                        // add transaction data object to provider
-                        var provider = Provider.of<TransactionProvider>(context,
-                            listen: false);
-                        provider.updateTransaction(statement);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) {
-                                  return MyHomePage();
-                                }));
-                      }
-                    })
-              ],
-            )));
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            border: const OutlineInputBorder(),
+          ),
+          autofocus: false,
+          controller: controller,
+          validator: (String? str) {
+            if (str!.isEmpty) {
+              return 'กรุณากรอกข้อมูล';
+            }
+            return null; // แก้ไขเมื่อไม่พบข้อผิดพลาด
+          },
+        ),
+      ),
+    );
   }
 }
