@@ -100,10 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(fontSize: 16)),
                         Text('Emblem: ${statement.emblem}',
                             style: TextStyle(fontSize: 16)),
+                        Text('PlayStyle: ${statement.playstyle}',
+                            style: TextStyle(fontSize: 16)),
                       ],
                     ),
                     leading: CircleAvatar(
-                      backgroundColor: const Color.fromARGB(255, 255, 73, 73),
+                      backgroundColor: const Color.fromARGB(255, 2, 18, 252),
                       child: FittedBox(
                         child: Text(
                           statement.compname,
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     trailing: IconButton(
                       icon: const Icon(
                         Icons.delete,
-                        color: Colors.red,
+                        color: Color.fromARGB(255, 253, 18, 1),
                         size: 45,
                       ),
                       onPressed: () {

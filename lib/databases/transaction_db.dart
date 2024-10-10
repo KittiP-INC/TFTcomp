@@ -28,6 +28,7 @@ class TransactionDB {
       "character": statement.character,
       "augment": statement.augment,
       "emblem": statement.emblem,
+      "playstyle": statement.playstyle,
     });
     db.close();
     return keyID;
@@ -46,6 +47,7 @@ class TransactionDB {
         character: record['character'].toString(),
         augment: record['augment'].toString(),
         emblem: record['emblem'].toString(),
+        playstyle: record['playstyle'].toString(),
       ));
     }
     db.close();
@@ -70,6 +72,7 @@ class TransactionDB {
       "character": statement.character,
       "augment": statement.augment,
       "emblem": statement.emblem,
+      "playstyle": statement.playstyle,
     });
     db.close();
     print('update result: $result');

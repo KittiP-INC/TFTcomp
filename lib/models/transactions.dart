@@ -4,6 +4,7 @@ class Transactions {
   final String character;
   final String augment;
   final String emblem;
+  final String playstyle;
 
   Transactions({
     this.keyID,
@@ -11,5 +12,6 @@ class Transactions {
     required this.character,
     required this.augment,
     required this.emblem,
+    required this.playstyle,
   });
 }

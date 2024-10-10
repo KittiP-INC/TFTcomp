@@ -20,13 +20,16 @@ class _EditScreenState extends State<EditScreen> {
   final characterController = TextEditingController();
   final augmentController = TextEditingController();
   final emblemController = TextEditingController();
+  final playstyleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     compnameController.text = widget.statement.compname;
     characterController.text = widget.statement.character;
-    augmentController.text = widget.statement.compname;
-    emblemController.text = widget.statement.compname;
+    augmentController.text = widget.statement.augment;
+    emblemController.text = widget.statement.emblem;
+    playstyleController.text = widget.statement.playstyle;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('แบบฟอร์มแก้ไขข้อมูล'),
@@ -83,24 +86,35 @@ class _EditScreenState extends State<EditScreen> {
                     }
                   },
                 ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'วิธีเล่น',
+                  ),
+                  autofocus: false,
+                  controller: playstyleController,
+                  validator: (String? str) {
+                    if (str!.isEmpty) {
+                      return 'กรุณากรอกข้อมูล';
+                    }
+                  },
+                ),
                 TextButton(
                     child: const Text('บันทึก'),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         // create transaction data object
                         var statement = Transactions(
-                          keyID: null,
+                          keyID: widget.statement.keyID,
                           compname: compnameController.text,
                           character: characterController.text,
                           augment: augmentController.text,
                           emblem: emblemController.text,
+                          playstyle: playstyleController.text,
                         );
                         // add transaction data object to provider
                         var provider = Provider.of<TransactionProvider>(context,
                             listen: false);
-
                         provider.updateTransaction(statement);
-
                         Navigator.push(
                             context,
                             MaterialPageRoute(

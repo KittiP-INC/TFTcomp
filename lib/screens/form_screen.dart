@@ -18,6 +18,7 @@ class _FormScreenState extends State<FormScreen> {
   final characterController = TextEditingController();
   final augmentController = TextEditingController();
   final emblemController = TextEditingController();
+  final playstyleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +78,26 @@ class _FormScreenState extends State<FormScreen> {
                     }
                   },
                 ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'PlayStyle',
+                  ),
+                  autofocus: false,
+                  controller: playstyleController,
+                  validator: (String? str) {
+                    if (str!.isEmpty) {
+                      return 'กรุณากรอกข้อมูล';
+                    }
+                  },
+                ),
                 TextButton(
-                    child: const Text('บันทึก'),
+                    child: const Text(
+                      'บันทึก',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Color.fromARGB(255, 5, 255, 255)),
+                    ),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         // create transaction data object
@@ -88,11 +107,11 @@ class _FormScreenState extends State<FormScreen> {
                           character: characterController.text,
                           augment: augmentController.text,
                           emblem: emblemController.text,
+                          playstyle: playstyleController.text,
                         );
                         // add transaction data object to provider
                         var provider = Provider.of<TransactionProvider>(context,
                             listen: false);
-
                         provider.addTransaction(statement);
 
                         Navigator.push(
@@ -100,7 +119,7 @@ class _FormScreenState extends State<FormScreen> {
                             MaterialPageRoute(
                                 fullscreenDialog: true,
                                 builder: (context) {
-                                  return MyHomePage();
+                                  return const MyHomePage();
                                 }));
                       }
                     })
